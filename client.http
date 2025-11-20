@@ -34,3 +34,10 @@ Authorization: Bearer {{authToken}}
   "title": "New question",
   "content": "Why sausage?"
 }
+
+### 
+
+# @name fetch_questions
+GET {{baseUrl}}/questions?page=1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
