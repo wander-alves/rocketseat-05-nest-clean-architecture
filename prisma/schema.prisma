@@ -27,4 +27,6 @@ model Question {
   authorId  String    @map("author_id")
 
   author User @relation(fields: [authorId], references: [id])
+
+  @@map("questions")
 }
