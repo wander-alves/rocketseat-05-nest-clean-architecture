@@ -14,7 +14,12 @@
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "migrate:up": "prisma migrate dev",
     "migrate:down": "prisma migrate reset",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:debug": "vitest run --inspect-brk --inspect --logHeapUsage --threads=false",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -32,13 +37,15 @@
     "zod-validation-error": "^5.0.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.2.0",
+    "@nestjs/cli": "^11.0.12",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
     "@rocketseat/eslint-config": "^2.2.2",
+    "@swc/core": "^1.15.3",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.7",
     "@types/passport-jwt": "^4.0.1",
+    "@vitest/coverage-c8": "^0.33.0",
     "eslint": "^8.57.1",
     "globals": "^16.0.0",
     "prisma": "^6.19.0",
@@ -47,6 +54,9 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "unplugin-swc": "^1.5.8",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.12"
   }
 }
