@@ -5,11 +5,9 @@ import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/prisma/prisma.service';
 
-describe('[E2E] Create Account Controller', () => {
+describe('[E2E] Authenticate Account Controller', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -17,26 +15,28 @@ describe('[E2E] Create Account Controller', () => {
     }).compile();
 
     app = moduleRef.createNestApplication();
-    prisma = moduleRef.get(PrismaService);
     await app.init();
   });
 
   test('[POST] /accounts', async () => {
+    await httpClient(app.getHttpServer()).post('/accounts').send({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'chimichangas',
+    });
+
     const response = await httpClient(app.getHttpServer())
-      .post('/accounts')
+      .post('/sessions')
       .send({
-        name: 'John Doe',
         email: 'john.doe@example.com',
         password: 'chimichangas',
       });
 
     expect(response.statusCode).toBe(201);
-    const registeredUser = await prisma.user.findUnique({
-      where: {
-        email: 'john.doe@example.com',
-      },
-    });
-
-    expect(registeredUser).toBeTruthy();
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        access_token: expect.any(String),
+      }),
+    );
   });
 });
