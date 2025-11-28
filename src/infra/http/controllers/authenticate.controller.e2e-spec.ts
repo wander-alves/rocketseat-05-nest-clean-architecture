@@ -4,7 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
-import { AppModule } from '@/app.module';
+import { AppModule } from '@/infra/app.module';
 
 describe('[E2E] Authenticate Account Controller', () => {
   let app: INestApplication;

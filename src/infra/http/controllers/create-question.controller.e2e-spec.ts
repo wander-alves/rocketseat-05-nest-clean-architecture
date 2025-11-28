@@ -4,11 +4,11 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
-import { AppModule } from '@/app.module';
-import { PrismaService } from '@/prisma/prisma.service';
+import { AppModule } from '@/infra/app.module';
+import { PrismaService } from '@/infra/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
-describe('[E2E] Fetch Recent Questions Controller', () => {
+describe('[E2E] Create Question Controller', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let jwt: JwtService;
@@ -21,11 +21,10 @@ describe('[E2E] Fetch Recent Questions Controller', () => {
     app = moduleRef.createNestApplication();
     prisma = moduleRef.get(PrismaService);
     jwt = moduleRef.get(JwtService);
-
     await app.init();
   });
 
-  test('[GET] /questions', async () => {
+  test('[POST] /questions', async () => {
     const user = await prisma.user.create({
       data: {
         name: 'John Doe',
@@ -34,36 +33,23 @@ describe('[E2E] Fetch Recent Questions Controller', () => {
       },
     });
 
-    await prisma.question.createMany({
-      data: [
-        {
-          authorId: user.id,
-          title: 'Question 01',
-          slug: 'question-01',
-          content: 'I can ask something here?',
-        },
-        {
-          authorId: user.id,
-          title: 'Question 02',
-          slug: 'question-02',
-          content: 'I can ask something here?',
-        },
-      ],
-    });
-
     const accessToken = jwt.sign({ sub: user.id });
 
     const response = await httpClient(app.getHttpServer())
-      .get('/questions')
+      .post('/questions')
       .set('Authorization', `Bearer ${accessToken}`)
-      .send();
+      .send({
+        title: 'New Question',
+        content: 'I can ask something here?',
+      });
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({ slug: 'question-01' }),
-        expect.objectContaining({ slug: 'question-02' }),
-      ],
+    expect(response.statusCode).toBe(201);
+    const registeredQuestion = await prisma.question.findFirst({
+      where: {
+        title: 'New Question',
+      },
     });
+
+    expect(registeredQuestion).toBeTruthy();
   });
 });
