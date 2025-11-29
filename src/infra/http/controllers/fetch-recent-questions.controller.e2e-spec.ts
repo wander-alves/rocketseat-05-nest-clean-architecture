@@ -5,7 +5,7 @@ import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
 import { AppModule } from '@/infra/app.module';
-import { PrismaService } from '@/infra/prisma/prisma.service';
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 describe('[E2E] Fetch Recent Questions Controller', () => {

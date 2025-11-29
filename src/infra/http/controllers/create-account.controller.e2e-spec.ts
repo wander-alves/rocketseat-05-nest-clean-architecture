@@ -5,7 +5,7 @@ import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
 import { AppModule } from '@/infra/app.module';
-import { PrismaService } from '@/infra/prisma/prisma.service';
+import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
 describe('[E2E] Create Account Controller', () => {
   let app: INestApplication;
