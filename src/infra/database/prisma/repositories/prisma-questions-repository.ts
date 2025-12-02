@@ -31,15 +31,36 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return PrismaQuestionMapper.toDomain(question);
   }
 
-  async findManyRecent(params: PaginationParams): Promise<Question[]> {
-    throw new Error('Method not implemented.');
+  async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
+    const perPage = 20;
+    const questions = await this.prisma.question.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+    });
+
+    return questions.map((question) => PrismaQuestionMapper.toDomain(question));
   }
 
   async create(question: Question): Promise<void> {
-    throw new Error('Method not implemented.');
+    const data = PrismaQuestionMapper.toPrisma(question);
+
+    await this.prisma.question.create({
+      data,
+    });
   }
 
-  async save(question: Question): Promise<void> {}
+  async save(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPrisma(question);
+    await this.prisma.question.update({
+      data,
+      where: {
+        id: question.id.toString(),
+      },
+    });
+  }
 
   async delete(id: string): Promise<void> {
     await this.prisma.question.delete({ where: { id } });
