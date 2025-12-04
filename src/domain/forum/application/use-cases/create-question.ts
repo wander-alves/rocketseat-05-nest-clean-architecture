@@ -3,6 +3,7 @@ import { QuestionsRepository } from '@/domain/forum/application/repositories/que
 import { Either, right } from '@/core/either';
 import { QuestionAttachmentList } from '@/domain/forum/enterprise/entities/question-attachment-list';
 import { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment';
+import { Injectable } from '@nestjs/common';
 
 interface CreateQuestionUseCaseRequest {
   authorId: string;
@@ -18,6 +19,7 @@ type CreateQuestionUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class CreateQuestionUseCase {
   constructor(private questionsRepository: QuestionsRepository) {}
 
