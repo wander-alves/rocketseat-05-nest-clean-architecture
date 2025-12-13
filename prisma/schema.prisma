@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -64,7 +65,6 @@ model Answer {
 
 model Comment {
   id         String   @id @default(uuid())
-  title      String
   content    String
   authorId   String   @map("author_id")
   questionId String?  @map("question_id")
