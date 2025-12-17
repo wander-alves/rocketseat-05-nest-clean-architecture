@@ -5,45 +5,42 @@ import { Test } from '@nestjs/testing';
 import httpClient from 'supertest';
 
 import { AppModule } from '@/infra/app.module';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { DatabaseModule } from '@/infra/database/database.module';
+import { StudentFactory } from 'tests/factories/make-student';
+import { QuestionFactory } from 'tests/factories/make-question';
+import { Slug } from '@/domain/forum/enterprise/entities/value-objects/slug';
 
 describe('[E2E] Get Question By Slug', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
   let jwt: JwtService;
+  let studentFactory: StudentFactory;
+  let questionFactory: QuestionFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory, QuestionFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
-    prisma = moduleRef.get(PrismaService);
     jwt = moduleRef.get(JwtService);
+    studentFactory = moduleRef.get(StudentFactory);
+    questionFactory = moduleRef.get(QuestionFactory);
 
     await app.init();
   });
 
   test('[GET] /questions/:slug', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        password: 'chimichangas',
-      },
-    });
+    const user = await studentFactory.makePrismaStudent();
 
-    await prisma.question.create({
-      data: {
-        authorId: user.id,
-        title: 'Question 01',
-        slug: 'question-01',
-        content: 'Can I ask something here?',
-      },
-    });
+    const accessToken = jwt.sign({ sub: user.id.toString() });
 
-    const accessToken = jwt.sign({ sub: user.id });
+    await questionFactory.makePrismaQuestion({
+      authorId: user.id.toString(),
+      title: 'Question 01',
+      slug: Slug.create('question-01'),
+    });
 
     const response = await httpClient(app.getHttpServer())
       .get('/questions/question-01')
