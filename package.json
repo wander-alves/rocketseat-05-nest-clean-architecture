@@ -19,7 +19,8 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest run --inspect-brk --inspect --logHeapUsage --threads=false",
-    "test:e2e": "vitest run --config ./vitest.config.e2e.mts"
+    "test:e2e": "vitest run --config ./vitest.config.e2e.mts",
+    "test:e2e:watch": "vitest --config ./vitest.config.e2e.mts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -28,7 +29,7 @@
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
-    "@prisma/client": "7.1.0",
+    "@prisma/client": "5.2.0",
     "@vitest/coverage-v8": "4.0.13",
     "bcryptjs": "^3.0.3",
     "passport-jwt": "^4.0.1",
@@ -51,7 +52,7 @@
     "@types/supertest": "6.0.3",
     "eslint": "^8.57.1",
     "globals": "^16.0.0",
-    "prisma": "7.1.0",
+    "prisma": "5.2.0",
     "source-map-support": "^0.5.21",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
