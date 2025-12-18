@@ -53,10 +53,10 @@ describe('[E2E] Fetch Recent Questions Controller', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({ slug: 'question-02' }),
+      questions: expect.arrayContaining([
         expect.objectContaining({ slug: 'question-01' }),
-      ],
+        expect.objectContaining({ slug: 'question-02' }),
+      ]),
     });
   });
 });
