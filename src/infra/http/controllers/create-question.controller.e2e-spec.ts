@@ -7,33 +7,33 @@ import httpClient from 'supertest';
 import { AppModule } from '@/infra/app.module';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { DatabaseModule } from '@/infra/database/database.module';
+import { StudentFactory } from 'tests/factories/make-student';
 
 describe('[E2E] Create Question Controller', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let jwt: JwtService;
+  let studentFactory: StudentFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
     prisma = moduleRef.get(PrismaService);
     jwt = moduleRef.get(JwtService);
+    studentFactory = moduleRef.get(StudentFactory);
+
     await app.init();
   });
 
   test('[POST] /questions', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        password: 'chimichangas',
-      },
-    });
+    const user = await studentFactory.makePrismaStudent();
 
-    const accessToken = jwt.sign({ sub: user.id });
+    const accessToken = jwt.sign({ sub: user.id.toString() });
 
     const response = await httpClient(app.getHttpServer())
       .post('/questions')
