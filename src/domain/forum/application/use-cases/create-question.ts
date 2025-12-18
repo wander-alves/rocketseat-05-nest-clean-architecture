@@ -1,9 +1,10 @@
+import { Injectable } from '@nestjs/common';
+
 import { Question } from '@/domain/forum/enterprise/entities/question';
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository';
 import { Either, right } from '@/core/either';
 import { QuestionAttachmentList } from '@/domain/forum/enterprise/entities/question-attachment-list';
 import { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment';
-import { Injectable } from '@nestjs/common';
 
 interface CreateQuestionUseCaseRequest {
   authorId: string;
