@@ -22,7 +22,7 @@ export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionUseCase) {}
 
   @Post()
-  async execute(
+  async handle(
     @Body(createQuestionBodyValidationPipe) body: CreateQuestionBodyData,
     @CurrentUserDecorator() user: TokenPayloadData,
   ) {

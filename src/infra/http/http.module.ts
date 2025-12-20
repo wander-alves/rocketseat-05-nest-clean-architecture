@@ -9,6 +9,7 @@ import { CreateQuestionController } from '@/infra/http/controllers/create-questi
 import { FetchRecentQuestionsController } from '@/infra/http/controllers/fetch-recent-questions.controller';
 import { GetQuestionBySlugController } from '@/infra/http/controllers/get-question-by-slug.controller';
 import { EditQuestionController } from '@/infra/http/controllers/edit-question.controller';
+import { AnswerQuestionController } from '@/infra/http/controllers/answer-question.controller';
 
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question';
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions';
@@ -18,6 +19,7 @@ import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/g
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question';
 import { DeleteQuestionController } from '@/infra/http/controllers/delete-question.controller';
 import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question';
+import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -29,6 +31,7 @@ import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/dele
     GetQuestionBySlugController,
     EditQuestionController,
     DeleteQuestionController,
+    AnswerQuestionController,
   ],
   providers: [
     CreateQuestionUseCase,
@@ -38,6 +41,7 @@ import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/dele
     GetQuestionBySlugUseCase,
     EditQuestionUseCase,
     DeleteQuestionUseCase,
+    AnswerQuestionUseCase,
   ],
 })
 export class HttpModule {}
