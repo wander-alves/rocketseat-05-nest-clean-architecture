@@ -1,4 +1,4 @@
-import { ChooseBestAnswerUseCase } from '@/domain/forum/application/use-cases/choose-best-answer';
+import { ChooseQuestionBestAnswerUseCase } from '@/domain/forum/application/use-cases/choose-question-best-answer';
 import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { makeAnswer } from 'tests/factories/make-answer';
 import { makeQuestion } from 'tests/factories/make-question';
@@ -12,9 +12,9 @@ let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
-let sut: ChooseBestAnswerUseCase;
+let sut: ChooseQuestionBestAnswerUseCase;
 
-describe('Choose Best Answer', () => {
+describe('Choose Question Best Answer', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
@@ -26,7 +26,7 @@ describe('Choose Best Answer', () => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentsRepository,
     );
-    sut = new ChooseBestAnswerUseCase(
+    sut = new ChooseQuestionBestAnswerUseCase(
       inMemoryQuestionsRepository,
       inMemoryAnswersRepository,
     );
