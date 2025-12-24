@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+
 import { Either, left, right } from '@/core/either';
 import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository';
 import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository';
@@ -6,7 +8,6 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
 import { AnswerAttachmentList } from '@/domain/forum/enterprise/entities/answer-attachment-list';
 import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment';
 import { Answer } from '@/domain/forum/enterprise/entities/answer';
-import { Injectable } from '@nestjs/common';
 
 interface EditAnswerUseCaseRequest {
   answerId: string;
