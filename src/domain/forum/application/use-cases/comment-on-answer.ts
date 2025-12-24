@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+
 import { Either, left, right } from '@/core/either';
 import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository';
 import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository';
@@ -17,6 +19,7 @@ type CommentOnAnswerUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class CommentOnAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
