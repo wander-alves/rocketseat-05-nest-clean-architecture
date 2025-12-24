@@ -5,11 +5,11 @@ import { QuestionCommentsRepository } from '@/domain/forum/application/repositor
 import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
 
-interface DeleteQuestionCommentRequest {
+interface DeleteQuestionCommentUseCaseRequest {
   authorId: string;
   questionCommentId: string;
 }
-type DeleteQuestionCommentResponse = Either<
+type DeleteQuestionCommentUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   null
 >;
@@ -21,7 +21,7 @@ export class DeleteQuestionCommentUseCase {
   async execute({
     authorId,
     questionCommentId,
-  }: DeleteQuestionCommentRequest): Promise<DeleteQuestionCommentResponse> {
+  }: DeleteQuestionCommentUseCaseRequest): Promise<DeleteQuestionCommentUseCaseResponse> {
     const questionComment =
       await this.questionCommentsRepository.findById(questionCommentId);
 

@@ -1,16 +1,16 @@
-import { DeleteAnswerComment } from '@/domain/forum/application/use-cases/delete-answer-comment';
+import { DeleteAnswerCommentUseCase } from '@/domain/forum/application/use-cases/delete-answer-comment';
 import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { makeAnswerComment } from 'tests/factories/make-answer-comment';
 import { InMemoryAnswerCommentsRepository } from 'tests/repositories/in-memory-answer-comments-repository';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
-let sut: DeleteAnswerComment;
+let sut: DeleteAnswerCommentUseCase;
 
 describe('Delete Answer Comment', () => {
   beforeEach(() => {
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
-    sut = new DeleteAnswerComment(inMemoryAnswerCommentsRepository);
+    sut = new DeleteAnswerCommentUseCase(inMemoryAnswerCommentsRepository);
   });
   it('should be able to delete a answer comment', async () => {
     const answerComment = makeAnswerComment();
