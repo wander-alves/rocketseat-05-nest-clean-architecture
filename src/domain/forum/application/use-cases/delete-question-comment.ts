@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either';
 import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository';
 import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
+import { Injectable } from '@nestjs/common';
 
 interface DeleteQuestionCommentRequest {
   authorId: string;
@@ -9,10 +10,11 @@ interface DeleteQuestionCommentRequest {
 }
 type DeleteQuestionCommentResponse = Either<
   ResourceNotFoundError | NotAllowedError,
-  {}
+  null
 >;
 
-export class DeleteQuestionComment {
+@Injectable()
+export class DeleteQuestionCommentUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
   async execute({
@@ -32,6 +34,6 @@ export class DeleteQuestionComment {
 
     await this.questionCommentsRepository.delete(questionCommentId);
 
-    return right({});
+    return right(null);
   }
 }
