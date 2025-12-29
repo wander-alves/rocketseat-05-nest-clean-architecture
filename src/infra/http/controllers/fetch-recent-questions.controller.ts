@@ -17,13 +17,13 @@ export class FetchRecentQuestionsController {
 
   @Get()
   async handle(@Query('page', queryValidationPipe) page: PageQueryParamSchema) {
-    const response = await this.fetchRecentQuestions.execute({ page });
+    const result = await this.fetchRecentQuestions.execute({ page });
 
-    if (response.isLeft()) {
+    if (result.isLeft()) {
       throw new BadRequestException();
     }
 
-    const { questions } = response.value;
+    const { questions } = result.value;
 
     return {
       questions: questions.map((question) =>

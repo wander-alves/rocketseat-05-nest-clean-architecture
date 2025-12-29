@@ -26,16 +26,16 @@ export class FetchQuestionCommentsController {
     @Query('page', queryValidationPipe) page: PageQueryParamData,
     @Param('questionId') questionId: string,
   ) {
-    const response = await this.fetchQuestionComments.execute({
+    const result = await this.fetchQuestionComments.execute({
       page,
       questionId,
     });
 
-    if (response.isLeft()) {
+    if (result.isLeft()) {
       throw new BadRequestException();
     }
 
-    const { questionComments } = response.value;
+    const { questionComments } = result.value;
 
     return {
       comments: questionComments.map((questionComment) =>
