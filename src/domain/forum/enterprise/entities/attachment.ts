@@ -1,6 +1,6 @@
 import { Entity } from '@/core/entities/entity';
 
-interface AttachmentProps {
+export interface AttachmentProps {
   title: string;
   url: string;
 }
