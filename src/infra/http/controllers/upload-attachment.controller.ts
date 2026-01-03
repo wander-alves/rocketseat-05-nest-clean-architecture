@@ -13,7 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 
 const maxFileSize2MB = 1024 * 1024 * 2;
-const acceptedFileTypes = '.(png|jpg|jpeg|webp|pdf)';
+const acceptedFileTypes = '.(png|jpg|jpeg|webp|pdf)$';
 
 @Controller('/attachments')
 export class UploadAttachmentController {
@@ -28,7 +28,10 @@ export class UploadAttachmentController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: maxFileSize2MB }),
-          new FileTypeValidator({ fileType: acceptedFileTypes }),
+          new FileTypeValidator({
+            fileType: acceptedFileTypes,
+            skipMagicNumbersValidation: true,
+          }),
         ],
       }),
     )
