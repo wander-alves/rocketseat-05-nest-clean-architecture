@@ -56,11 +56,11 @@ describe('[E2E] Edit Question Controller', () => {
       authorId: user.id.toString(),
     });
 
-    await questionAttachmentFactory.makePrismaAttachment({
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
       questionId: question.id.toString(),
       attachmentId: attachment1.id.toString(),
     });
-    await questionAttachmentFactory.makePrismaAttachment({
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
       questionId: question.id.toString(),
       attachmentId: attachment2.id.toString(),
     });
