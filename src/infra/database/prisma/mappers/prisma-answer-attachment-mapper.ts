@@ -1,4 +1,4 @@
-import { Attachment as PrismaAnswerAttachment } from '@prisma/client';
+import { Prisma, Attachment as PrismaAnswerAttachment } from '@prisma/client';
 import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment';
 
 export class PrismaAnswerAttachmentMapper {
@@ -14,5 +14,24 @@ export class PrismaAnswerAttachmentMapper {
       },
       raw.id,
     );
+  }
+
+  static toPrismaUpdateMany(
+    attachments: AnswerAttachment[],
+  ): Prisma.AttachmentUpdateManyArgs {
+    const attachmentIds = attachments.map((attachment) =>
+      attachment.attachmentId.toString(),
+    );
+
+    return {
+      where: {
+        id: {
+          in: attachmentIds,
+        },
+      },
+      data: {
+        answerId: attachments[0].answerId,
+      },
+    };
   }
 }

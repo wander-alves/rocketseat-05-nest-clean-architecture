@@ -14,6 +14,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 
 const answerQuestionBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 });
 
 type AnswerQuestionBodyData = z.infer<typeof answerQuestionBodySchema>;
@@ -32,7 +33,7 @@ export class AnswerQuestionController {
     @CurrentUserDecorator() user: TokenPayloadData,
     @Param('questionId') questionId: string,
   ) {
-    const { content } = body;
+    const { content, attachments } = body;
 
     const userId = user.sub;
 
@@ -40,7 +41,7 @@ export class AnswerQuestionController {
       content,
       questionId,
       authorId: userId,
-      attachmentIds: [],
+      attachmentIds: attachments,
     });
 
     if (result.isLeft()) {

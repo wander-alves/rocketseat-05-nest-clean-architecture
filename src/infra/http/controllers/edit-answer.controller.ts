@@ -14,6 +14,7 @@ import z from 'zod/v3';
 
 const editAnswerBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 });
 
 type EditAnswerBodyData = z.infer<typeof editAnswerBodySchema>;
@@ -33,14 +34,14 @@ export class EditAnswerController {
     @CurrentUserDecorator() user: TokenPayloadData,
     @Param('id') answerId: string,
   ) {
-    const { content } = body;
+    const { content, attachments } = body;
     const userId = user.sub;
 
     const result = await this.editAnswer.execute({
       answerId,
       authorId: userId,
       content,
-      attachmentIds: [],
+      attachmentIds: attachments,
     });
 
     if (result.isLeft()) {

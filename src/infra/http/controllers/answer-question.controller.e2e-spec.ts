@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { StudentFactory } from 'tests/factories/make-student';
 import { QuestionFactory } from 'tests/factories/make-question';
+import { AttachmentFactory } from 'tests/factories/make-attachment';
 
 describe('[E2E] Answer Question Controller', () => {
   let app: INestApplication;
@@ -17,11 +18,12 @@ describe('[E2E] Answer Question Controller', () => {
   let jwt: JwtService;
   let studentFactory: StudentFactory;
   let questionFactory: QuestionFactory;
+  let attachmentFactory: AttachmentFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory],
+      providers: [StudentFactory, QuestionFactory, AttachmentFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -29,6 +31,7 @@ describe('[E2E] Answer Question Controller', () => {
     jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(StudentFactory);
     questionFactory = moduleRef.get(QuestionFactory);
+    attachmentFactory = moduleRef.get(AttachmentFactory);
 
     await app.init();
   });
@@ -44,11 +47,15 @@ describe('[E2E] Answer Question Controller', () => {
 
     const questionId = question.id.toString();
 
+    const attachment1 = await attachmentFactory.makePrismaAttachment();
+    const attachment2 = await attachmentFactory.makePrismaAttachment();
+
     const response = await httpClient(app.getHttpServer())
       .post(`/questions/${questionId}/answers`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New answer',
+        attachments: [attachment1.id.toString(), attachment2.id.toString()],
       });
 
     const registeredAnswer = await prisma.answer.findFirst({
@@ -57,7 +64,14 @@ describe('[E2E] Answer Question Controller', () => {
       },
     });
 
+    const registeredAttachments = await prisma.attachment.findMany({
+      where: {
+        answerId: registeredAnswer?.id,
+      },
+    });
+
     expect(response.statusCode).toBe(201);
     expect(registeredAnswer).toBeTruthy();
+    expect(registeredAttachments).toHaveLength(2);
   });
 });

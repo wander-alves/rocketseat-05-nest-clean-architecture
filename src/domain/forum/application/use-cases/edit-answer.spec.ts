@@ -91,4 +91,45 @@ describe('Edit Answer', () => {
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
   });
+
+  it('should sync new and removed attachment when editing an answer', async () => {
+    const newAnswer = makeAnswer(
+      {
+        authorId: 'author-01',
+      },
+      'question-01',
+    );
+
+    inMemoryAnswersRepository.create(newAnswer);
+    inMemoryAnswerAttachmentsRepository.items.push(
+      makeAnswerAttachment({
+        attachmentId: '1',
+        answerId: newAnswer.id.toString(),
+      }),
+      makeAnswerAttachment({
+        attachmentId: '2',
+        answerId: newAnswer.id.toString(),
+      }),
+    );
+
+    const result = await sut.execute({
+      answerId: 'question-01',
+      authorId: 'author-01',
+      content: 'New content',
+      attachmentIds: ['1', '3'],
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(inMemoryAnswerAttachmentsRepository.items).toHaveLength(2);
+    expect(inMemoryAnswerAttachmentsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: '1',
+        }),
+        expect.objectContaining({
+          attachmentId: '3',
+        }),
+      ]),
+    );
+  });
 });
