@@ -66,10 +66,7 @@ describe('Edit Question', () => {
     ]);
     expect(
       inMemoryQuestionsRepository.items[0].attachments.getRemovedItems(),
-    ).toEqual([
-      expect.objectContaining({ attachmentId: '1' }),
-      expect.objectContaining({ attachmentId: '2' }),
-    ]);
+    ).toEqual([expect.objectContaining({ attachmentId: '2' })]);
   });
 
   it('should not be able to edit questions from another author', async () => {

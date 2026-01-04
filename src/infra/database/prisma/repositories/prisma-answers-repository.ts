@@ -55,13 +55,7 @@ export class PrismaAnswersRepository implements AnswersRepository {
     const data = PrismaAnswerMapper.toPrisma(answer);
 
     const attachmentsToUpdate = answer.attachments.getNewItems();
-    const removedItems = answer.attachments.getRemovedItems();
-    const attachmentsToRemove = removedItems.filter(
-      (attachment) =>
-        !attachmentsToUpdate.some(
-          (item) => item.attachmentId === attachment.attachmentId,
-        ),
-    );
+    const attachmentsToRemove = answer.attachments.getRemovedItems();
 
     await Promise.all([
       this.prisma.answer.update({

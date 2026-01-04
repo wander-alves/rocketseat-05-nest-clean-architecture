@@ -3,6 +3,6 @@ import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-atta
 
 export class AnswerAttachmentList extends WatchedList<AnswerAttachment> {
   compareItems(a: AnswerAttachment, b: AnswerAttachment): boolean {
-    return a.id === b.id;
+    return a.attachmentId === b.attachmentId;
   }
 }

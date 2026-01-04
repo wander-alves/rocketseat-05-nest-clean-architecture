@@ -64,13 +64,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     const data = PrismaQuestionMapper.toPrisma(question);
 
     const attachmentsToUpdate = question.attachments.getNewItems();
-    const removedItems = question.attachments.getRemovedItems();
-    const attachmentsToRemove = removedItems.filter(
-      (attachment) =>
-        !attachmentsToUpdate.some(
-          (item) => item.attachmentId === attachment.attachmentId,
-        ),
-    );
+    const attachmentsToRemove = question.attachments.getRemovedItems();
 
     await Promise.all([
       this.prisma.question.update({
