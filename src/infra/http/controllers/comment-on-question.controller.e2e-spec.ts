@@ -42,15 +42,17 @@ describe('[E2E] Comment on Question Controller', () => {
       authorId: user.id.toString(),
     });
 
+    const questionId = question.id.toString();
+
     const response = await httpClient(app.getHttpServer())
-      .post(`/questions/${question.id.toString()}/comments`)
+      .post(`/questions/${questionId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New comment',
       });
 
     const registeredComment = await prisma.comment.findFirst({
-      where: { questionId: question.id.toString() },
+      where: { questionId },
     });
 
     expect(response.statusCode).toBe(201);

@@ -68,8 +68,9 @@ describe('[E2E] Fetch Answer Comments Controller', () => {
       }),
     ]);
 
+    const answerId = answer.id.toString();
     const response = await httpClient(app.getHttpServer())
-      .get(`/answers/${answer.id.toString()}/comments`)
+      .get(`/answers/${answerId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 

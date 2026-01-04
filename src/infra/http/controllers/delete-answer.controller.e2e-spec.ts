@@ -50,13 +50,15 @@ describe('[E2E] Delete Answer Controller', () => {
       questionId: question.id.toString(),
     });
 
+    const answerId = answer.id.toString();
+
     const response = await httpClient(app.getHttpServer())
-      .delete(`/answers/${answer.id.toString()}`)
+      .delete(`/answers/${answerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 
     const answerOnDatabase = await prisma.answer.findUnique({
-      where: { id: answer.id.toString() },
+      where: { id: answerId },
     });
 
     expect(response.statusCode).toBe(204);

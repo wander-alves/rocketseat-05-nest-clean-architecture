@@ -37,8 +37,6 @@ describe('[E2E] Upload Attachment Controller', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .attach('file', './tests/e2e/mock/upload-sample.png');
 
-    console.log(response.body);
-
     expect(response.statusCode).toBe(201);
   });
 });

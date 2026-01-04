@@ -51,13 +51,14 @@ describe('[E2E] Delete Question Comment Controller', () => {
         authorId: user.id.toString(),
       });
 
+    const questionCommentId = questionComment.id.toString();
     const response = await httpClient(app.getHttpServer())
-      .delete(`/questions/comments/${questionComment.id.toString()}`)
+      .delete(`/questions/comments/${questionCommentId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 
     const registeredQuestionComment = await prisma.comment.findUnique({
-      where: { id: questionComment.id.toString() },
+      where: { id: questionCommentId },
     });
 
     expect(response.statusCode).toBe(204);

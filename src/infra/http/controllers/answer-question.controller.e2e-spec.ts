@@ -45,10 +45,10 @@ describe('[E2E] Answer Question Controller', () => {
       authorId: user.id.toString(),
     });
 
-    const questionId = question.id.toString();
-
     const attachment1 = await attachmentFactory.makePrismaAttachment();
     const attachment2 = await attachmentFactory.makePrismaAttachment();
+
+    const questionId = question.id.toString();
 
     const response = await httpClient(app.getHttpServer())
       .post(`/questions/${questionId}/answers`)

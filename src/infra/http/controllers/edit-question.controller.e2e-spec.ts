@@ -67,8 +67,9 @@ describe('[E2E] Edit Question Controller', () => {
 
     const attachment3 = await attachmentFactory.makePrismaAttachment();
 
+    const questionId = question.id.toString();
     const response = await httpClient(app.getHttpServer())
-      .put(`/questions/${question.id.toString()}`)
+      .put(`/questions/${questionId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         title: 'New Title',
@@ -78,13 +79,13 @@ describe('[E2E] Edit Question Controller', () => {
 
     const registeredQuestion = await prisma.question.findUnique({
       where: {
-        id: question.id.toString(),
+        id: questionId,
       },
     });
 
     const registeredQuestionAttachments = await prisma.attachment.findMany({
       where: {
-        questionId: question.id.toString(),
+        questionId,
       },
     });
 

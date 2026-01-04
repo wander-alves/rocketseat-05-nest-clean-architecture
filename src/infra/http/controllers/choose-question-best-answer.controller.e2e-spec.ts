@@ -50,8 +50,10 @@ describe('[E2E] Choose Qeustion Best Answer Controller', () => {
       authorId: user.id.toString(),
     });
 
+    const answerId = answer.id.toString();
+
     const response = await httpClient(app.getHttpServer())
-      .patch(`/answers/${answer.id.toString()}/choose-as-best`)
+      .patch(`/answers/${answerId}/choose-as-best`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 

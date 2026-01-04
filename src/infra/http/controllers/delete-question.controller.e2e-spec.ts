@@ -42,13 +42,14 @@ describe('[E2E] Delete Question Controller', () => {
       authorId: user.id.toString(),
     });
 
+    const questionId = question.id.toString();
     const response = await httpClient(app.getHttpServer())
-      .delete(`/questions/${question.id.toString()}`)
+      .delete(`/questions/${questionId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 
     const questionOnDatabase = await prisma.question.findUnique({
-      where: { id: question.id.toString() },
+      where: { id: questionId },
     });
 
     expect(response.statusCode).toBe(204);

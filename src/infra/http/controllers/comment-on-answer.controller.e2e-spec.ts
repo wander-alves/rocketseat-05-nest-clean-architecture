@@ -50,15 +50,17 @@ describe('[E2E] Comment on Answer Controller', () => {
       questionId: question.id.toString(),
     });
 
+    const answerId = answer.id.toString();
+
     const response = await httpClient(app.getHttpServer())
-      .post(`/answers/${answer.id.toString()}/comments`)
+      .post(`/answers/${answerId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New comment',
       });
 
     const registeredComment = await prisma.comment.findFirst({
-      where: { answerId: answer.id.toString() },
+      where: { answerId },
     });
 
     expect(response.statusCode).toBe(201);

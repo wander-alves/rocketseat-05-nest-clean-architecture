@@ -55,8 +55,9 @@ describe('[E2E] Fetch Answer Questions Controller', () => {
       }),
     ]);
 
+    const questionId = question.id.toString();
     const response = await httpClient(app.getHttpServer())
-      .get(`/questions/${question.id.toString()}/answers`)
+      .get(`/questions/${questionId}/answers`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 

@@ -42,21 +42,22 @@ describe('[E2E] Fetch Question Comments Controller', () => {
       authorId: user.id.toString(),
     });
 
+    const questionId = question.id.toString();
     await Promise.all([
       questionCommentFactory.makePrismaQuestionComment({
         authorId: user.id.toString(),
-        questionId: question.id.toString(),
+        questionId,
         content: 'Comment 01',
       }),
       questionCommentFactory.makePrismaQuestionComment({
         authorId: user.id.toString(),
-        questionId: question.id.toString(),
+        questionId,
         content: 'Comment 02',
       }),
     ]);
 
     const response = await httpClient(app.getHttpServer())
-      .get(`/questions/${question.id.toString()}/comments`)
+      .get(`/questions/${questionId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 
