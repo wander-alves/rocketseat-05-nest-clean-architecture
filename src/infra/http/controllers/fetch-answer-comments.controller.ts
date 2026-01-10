@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
-import { HttpAnswerCommentPresenter } from '@/infra/http/presenters/http-answer-comment-presenter';
+import { HttpCommentWithAuthorPresenter } from '@/infra/http/presenters/http-comment-with-author-presenter';
 
 const pageQueryParamsSchema = z.coerce.number().min(1).optional().default(1);
 
@@ -41,7 +41,7 @@ export class FetchAnswerCommentsController {
 
     return {
       comments: answerComments.map((answerComment) =>
-        HttpAnswerCommentPresenter.toHttp(answerComment),
+        HttpCommentWithAuthorPresenter.toHttp(answerComment),
       ),
     };
   }
