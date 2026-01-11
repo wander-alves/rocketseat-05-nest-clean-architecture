@@ -6,7 +6,7 @@ export interface QuestionDetailsProps {
   title: string;
   content: string;
   slug: string;
-  bestAnswserId?: string | null;
+  bestAnswerId?: string | null;
   authorId: string;
   authorName: string;
   attachments: Attachment[];
@@ -31,8 +31,8 @@ export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
     return this.props.slug;
   }
 
-  get bestAnswserId() {
-    return this.props.bestAnswserId;
+  get bestAnswerId() {
+    return this.props.bestAnswerId;
   }
 
   get authorId() {
