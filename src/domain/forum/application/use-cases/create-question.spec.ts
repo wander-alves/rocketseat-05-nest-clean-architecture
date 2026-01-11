@@ -2,8 +2,12 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { InMemoryQuestionsRepository } from 'tests/repositories/in-memory-questions-repository';
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question';
 import { InMemoryQuestionAttachmentsRepository } from 'tests/repositories/in-memory-question-attachments-repository';
+import { InMemoryAttachmentsRepository } from 'tests/repositories/in-memory-attachments-repository';
+import { InMemoryStudentsRepository } from 'tests/repositories/in-memory-student-repository';
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let sut: CreateQuestionUseCase;
 
@@ -11,8 +15,12 @@ describe('Create Question', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
+    inMemoryStudentsRepository = new InMemoryStudentsRepository();
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     );
     sut = new CreateQuestionUseCase(inMemoryQuestionsRepository);
   });

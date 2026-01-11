@@ -13,9 +13,13 @@ import {
 import { InMemoryNotificationsRepository } from 'tests/repositories/in-memory-notifications-repository';
 import { makeQuestion } from 'tests/factories/make-question';
 import { waitFor } from 'tests/utils/wait-for';
+import { InMemoryAttachmentsRepository } from 'tests/repositories/in-memory-attachments-repository';
+import { InMemoryStudentsRepository } from 'tests/repositories/in-memory-student-repository';
 
-let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -31,8 +35,12 @@ describe('On Answer Created', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
+    inMemoryStudentsRepository = new InMemoryStudentsRepository();
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     );
 
     inMemoryAnswerAttachmentsRepository =

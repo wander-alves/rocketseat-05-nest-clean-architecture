@@ -1,10 +1,14 @@
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions';
 import { makeQuestion } from 'tests/factories/make-question';
+import { InMemoryAttachmentsRepository } from 'tests/repositories/in-memory-attachments-repository';
 import { InMemoryQuestionAttachmentsRepository } from 'tests/repositories/in-memory-question-attachments-repository';
 import { InMemoryQuestionsRepository } from 'tests/repositories/in-memory-questions-repository';
+import { InMemoryStudentsRepository } from 'tests/repositories/in-memory-student-repository';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let sut: FetchRecentQuestionsUseCase;
 
@@ -12,8 +16,12 @@ describe('Fetch Recent Questions', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository();
+    inMemoryStudentsRepository = new InMemoryStudentsRepository();
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     );
     sut = new FetchRecentQuestionsUseCase(inMemoryQuestionsRepository);
   });
