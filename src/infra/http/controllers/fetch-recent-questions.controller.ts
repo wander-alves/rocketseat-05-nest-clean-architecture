@@ -3,7 +3,7 @@ import { z } from 'zod/v3';
 
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe';
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions';
-import { HTTPQuestionPresenter } from '@/infra/http/presenters/http-question-presenter';
+import { HttpQuestionPresenter } from '@/infra/http/presenters/http-question-presenter';
 
 const pageQueryParamSchema = z.coerce.number().min(1).optional().default(1);
 
@@ -27,7 +27,7 @@ export class FetchRecentQuestionsController {
 
     return {
       questions: questions.map((question) =>
-        HTTPQuestionPresenter.toHTTP(question),
+        HttpQuestionPresenter.toHTTP(question),
       ),
     };
   }
