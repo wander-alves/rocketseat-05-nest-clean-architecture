@@ -57,7 +57,6 @@ describe('Get Question By Slug', () => {
     const result = await sut.execute({
       slug: 'new-question',
     });
-    console.log(result.value);
 
     expect(result.isRight()).toBe(true);
     expect(result.value).toMatchObject({

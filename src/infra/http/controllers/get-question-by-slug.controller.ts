@@ -1,5 +1,5 @@
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug';
-import { HttpQuestionPresenter } from '@/infra/http/presenters/http-question-presenter';
+import { HttpQuestionDetailsPresenter } from '@/infra/http/presenters/http-question-details-presenter';
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 
 @Controller('/questions/:slug')
@@ -15,7 +15,7 @@ export class GetQuestionBySlugController {
     }
 
     return {
-      question: HttpQuestionPresenter.toHTTP(result.value.question),
+      question: HttpQuestionDetailsPresenter.toHTTP(result.value.question),
     };
   }
 }
