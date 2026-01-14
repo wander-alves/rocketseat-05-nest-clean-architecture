@@ -5,7 +5,7 @@ export interface NotificationProps {
   recipientId: string;
   title: string;
   content: string;
-  readAt?: Date;
+  readAt?: Date | null;
   createdAt: Date;
 }
 

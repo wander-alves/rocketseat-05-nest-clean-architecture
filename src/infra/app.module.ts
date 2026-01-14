@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { envSchema } from '@/infra/env/env';
 import { AuthModule } from '@/infra/auth/auth.module';
 import { HttpModule } from '@/infra/http/http.module';
+import { EventsModule } from '@/infra/events/events.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { HttpModule } from '@/infra/http/http.module';
     }),
     AuthModule,
     HttpModule,
+    EventsModule,
   ],
 })
 export class AppModule {}
