@@ -10,6 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { StudentFactory } from 'tests/factories/make-student';
 import { QuestionFactory } from 'tests/factories/make-question';
+import { DomainEvents } from '@/core/events/domain-events';
+import { waitFor } from 'tests/utils/wait-for';
 
 describe('[E2E] On Answer Created', () => {
   let app: INestApplication;
@@ -29,6 +31,8 @@ describe('[E2E] On Answer Created', () => {
     jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(StudentFactory);
     questionFactory = moduleRef.get(QuestionFactory);
+
+    DomainEvents.shouldRun = true;
 
     await app.init();
   });
@@ -52,12 +56,14 @@ describe('[E2E] On Answer Created', () => {
         attachments: [],
       });
 
-    const notificationsOnDatabase = await prisma.notification.findMany({
-      where: {
-        recipientId: user.id.toString(),
-      },
-    });
+    await waitFor(async () => {
+      const notificationsOnDatabase = await prisma.notification.findFirst({
+        where: {
+          recipientId: user.id.toString(),
+        },
+      });
 
-    expect(notificationsOnDatabase).toBeTruthy();
+      expect(notificationsOnDatabase).toBeTruthy();
+    });
   });
 });
