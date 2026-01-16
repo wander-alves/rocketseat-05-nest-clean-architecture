@@ -21,7 +21,7 @@ const editQuestionBodySchema = z.object({
 
 type EditQuestionBodyData = z.infer<typeof editQuestionBodySchema>;
 
-const editqeustionBodyValidationPipe = new ZodValidationPipe(
+const editQuestionBodyValidationPipe = new ZodValidationPipe(
   editQuestionBodySchema,
 );
 
@@ -32,7 +32,7 @@ export class EditQuestionController {
   @Put()
   @HttpCode(204)
   async handle(
-    @Body(editqeustionBodyValidationPipe) body: EditQuestionBodyData,
+    @Body(editQuestionBodyValidationPipe) body: EditQuestionBodyData,
     @CurrentUserDecorator() user: TokenPayloadData,
     @Param('id') questionId: string,
   ) {

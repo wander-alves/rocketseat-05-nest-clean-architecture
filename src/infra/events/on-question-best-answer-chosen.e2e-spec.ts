@@ -1,4 +1,4 @@
-import { describe, beforeAll, test, expect } from 'vitest';
+import { describe, beforeAll, expect, it } from 'vitest';
 
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
@@ -11,8 +11,10 @@ import { DatabaseModule } from '@/infra/database/database.module';
 import { StudentFactory } from 'tests/factories/make-student';
 import { QuestionFactory } from 'tests/factories/make-question';
 import { AnswerFactory } from 'tests/factories/make-answer';
+import { DomainEvents } from '@/core/events/domain-events';
+import { waitFor } from 'tests/utils/wait-for';
 
-describe('[E2E] Choose Question Best Answer Controller', () => {
+describe('[E2E] On Question Best Answer Chosen', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let jwt: JwtService;
@@ -33,10 +35,12 @@ describe('[E2E] Choose Question Best Answer Controller', () => {
     questionFactory = moduleRef.get(QuestionFactory);
     answerFactory = moduleRef.get(AnswerFactory);
 
+    DomainEvents.shouldRun = true;
+
     await app.init();
   });
 
-  test('[PATCH] /answers/:id/choose-as-best', async () => {
+  it('should send a notification when question best answer is chosen', async () => {
     const user = await studentFactory.makePrismaStudent();
 
     const accessToken = jwt.sign({ sub: user.id.toString() });
@@ -52,22 +56,19 @@ describe('[E2E] Choose Question Best Answer Controller', () => {
 
     const answerId = answer.id.toString();
 
-    const response = await httpClient(app.getHttpServer())
+    await httpClient(app.getHttpServer())
       .patch(`/answers/${answerId}/choose-as-best`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
 
-    const registeredQuestion = await prisma.question.findUnique({
-      where: {
-        id: question.id.toString(),
-      },
-    });
+    await waitFor(async () => {
+      const notificationsOnDatabase = await prisma.notification.findFirst({
+        where: {
+          recipientId: user.id.toString(),
+        },
+      });
 
-    expect(response.statusCode).toBe(204);
-    expect(registeredQuestion).toEqual(
-      expect.objectContaining({
-        bestAnswerId: answer.id.toString(),
-      }),
-    );
+      expect(notificationsOnDatabase).toBeTruthy();
+    });
   });
 });
