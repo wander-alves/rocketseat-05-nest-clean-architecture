@@ -3,6 +3,9 @@ import { z } from 'zod/v3';
 export const envSchema = z.object({
   DATABASE_URL: z.string().url().startsWith('postgres://'),
   PORT: z.coerce.number().optional().default(3333),
+  REDIS_HOST: z.string().optional().default('127.0.0.1'),
+  REDIS_PORT: z.coerce.number().optional().default(6379),
+  REDIS_DB: z.coerce.number().optional().default(0),
   JWT_PRIVATE_KEY: z.string(),
   JWT_PUBLIC_KEY: z.string(),
   CLOUDFLARE_ACCOUNT_ID: z.string(),

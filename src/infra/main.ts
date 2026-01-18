@@ -6,8 +6,8 @@ import { EnvService } from '@/infra/env/env.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const configService: EnvService = app.get(EnvService);
-  const port = configService.get('PORT');
+  const envService: EnvService = app.get(EnvService);
+  const port = envService.get('PORT');
 
   await app.listen(port);
 }
