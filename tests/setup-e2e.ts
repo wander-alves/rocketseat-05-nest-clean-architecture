@@ -6,13 +6,20 @@ import { execSync } from 'node:child_process';
 import { DomainEvents } from '@/core/events/domain-events';
 import Redis from 'ioredis';
 import { envSchema } from '@/infra/env/env';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 config({ path: '.env', override: true });
 config({ path: '.env.test', override: true });
 
 const env = envSchema.parse(process.env);
+const databaseURL = new URL(env.DATABASE_URL);
 
-const prismaClient = new PrismaClient();
+const adapter = new PrismaPg({
+  connectionString: databaseURL.toString(),
+});
+
+const prismaClient = new PrismaClient({ adapter });
+
 const redisClient = new Redis({
   host: env.REDIS_HOST,
   port: env.REDIS_PORT,
@@ -20,15 +27,9 @@ const redisClient = new Redis({
 });
 
 function generateDatabaseURL(schemaID: string) {
-  if (!env.DATABASE_URL) {
-    throw new Error('Missing environment variable DATABASE_URL');
-  }
-  const databaseURL = env.DATABASE_URL;
-  const url = new URL(databaseURL);
+  databaseURL.searchParams.set('schema', schemaID);
 
-  url.searchParams.set('schema', schemaID);
-
-  return url.toString();
+  return databaseURL.toString();
 }
 
 const schemaID = randomUUID();
